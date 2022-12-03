@@ -59,3 +59,10 @@ void array_free(struct array_t *const arr) {
   arr->get = NULL;
   arr->remove = NULL;
 }
+
+void array_map(struct array_t *const arr, map_callback_t callback,
+               void *context) {
+  for (int i = 0; i < arr->len; ++i) {
+    callback(arr->data[i], context);
+  }
+}

@@ -9,11 +9,33 @@
 /**
  * Context object for callback.
  */
-struct context {
+struct execution_context {
   FILE *inputFile;
   struct array_t *topCalories;
 };
 
+/**
+ * Context for array mapping with add function.
+ */
+struct map_context {
+  int result;
+};
+
+/**
+ * Mapping callback for array.
+ * @param[in] int Item
+ * @param[in,out] void* The mapping context.
+ */
+void add(int item, void *context) {
+  struct map_context *con = (struct map_context *)context;
+  con->result += item;
+}
+
+/**
+ * Insert given max calorie if appropriate.
+ * @param[in,out] struct array_t*const arr The array object.
+ * @param[in] int curMax The current given max calorie.
+ */
 void insert_top_calories(struct array_t *const arr, int curMax) {
   if (arr->len < arr->cap) {
     arr->add(arr, curMax);
@@ -28,16 +50,12 @@ void insert_top_calories(struct array_t *const arr, int curMax) {
   }
 }
 
-int add(struct array_t const *const arr) {
-  int result = 0;
-  for (int i = 0; i < arr->len; ++i) {
-    result += arr->data[i];
-  }
-  return result;
-}
-
+/**
+ * Execute function for the main logic of the program.
+ * @param[in,out] void* context The execution context.
+ */
 void *execute(void *context) {
-  struct context *con = (struct context *)context;
+  struct execution_context *con = (struct execution_context *)context;
   char line[LINE_SIZE];
   int curMax = 0;
   if (con->inputFile == NULL)
@@ -67,9 +85,12 @@ int main(int argc, char **argv) {
   array_init(&topCalories, topN);
   FILE *inputFile = NULL;
   defer(inputFile = fopen(argv[1], "r"), fclose(inputFile)) {
-    struct context con = {.inputFile = inputFile, .topCalories = &topCalories};
+    struct execution_context con = {.inputFile = inputFile,
+                                    .topCalories = &topCalories};
     double time_in_sec = time_callback(execute, &con);
-    printf("max = %d\n", add(con.topCalories));
+    struct map_context map = {.result = 0};
+    array_map(&topCalories, add, &map);
+    printf("max = %d\n", map.result);
     printf("execution time: %lf seconds.\n", time_in_sec);
     array_free(&topCalories);
   }

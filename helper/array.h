@@ -15,6 +15,8 @@ struct array_t {
   void (*remove)(struct array_t *const, const int, int *);
 };
 
+typedef void (*map_callback_t)(int, void *);
+
 /**
  * Initialize the array.
  * @param[in,out] struct array_t*const The array_t object to initialize.
@@ -27,5 +29,13 @@ void array_init(struct array_t *const, const size_t);
  * @param[in,out] struct array_t*const The array_t object to free.
  */
 void array_free(struct array_t *const);
+
+/**
+ * Map over the array with a given callback and context.
+ * @param[in] struct array_t*const The array object.
+ * @param[in] map_callback_t The callback to map over.
+ * @param[in,out] void* The context during the process.
+ */
+void array_map(struct array_t *const, map_callback_t, void *);
 
 #endif
