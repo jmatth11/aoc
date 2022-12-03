@@ -5,7 +5,7 @@
 
 #define RESIZE_CONST 1.7
 
-void add_value(struct array_t *arr, int item) {
+static void add_value(struct array_t *arr, int item) {
   if (arr->len < arr->cap) {
     arr->data[arr->len] = item;
     arr->len = arr->len + 1;
@@ -16,14 +16,14 @@ void add_value(struct array_t *arr, int item) {
   memset(&arr->data[arr->len], 0, newCap - arr->len);
 }
 
-void get_value(struct array_t *const arr, const int index, int *out) {
+static void get_value(struct array_t *const arr, const int index, int *out) {
   if (index >= arr->len) {
     return;
   }
   *out = arr->data[index];
 }
 
-void remove_value(struct array_t *const arr, const int index, int *out) {
+static void remove_value(struct array_t *const arr, const int index, int *out) {
   if (index >= arr->len) {
     return;
   }
