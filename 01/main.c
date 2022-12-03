@@ -58,8 +58,6 @@ void *execute(void *context) {
   struct execution_context *con = (struct execution_context *)context;
   char line[LINE_SIZE];
   int curMax = 0;
-  if (con->inputFile == NULL)
-    fprintf(stderr, "couldn't open input file.");
   while (fgets(line, LINE_SIZE, con->inputFile) != NULL) {
     if (strcmp(line, "\n") == 0) {
       insert_top_calories(con->topCalories, curMax);
@@ -85,6 +83,8 @@ int main(int argc, char **argv) {
   array_init(&topCalories, topN);
   FILE *inputFile = NULL;
   defer(inputFile = fopen(argv[1], "r"), fclose(inputFile)) {
+    if (inputFile == NULL)
+      fprintf(stderr, "couldn't open input file.");
     struct execution_context con = {.inputFile = inputFile,
                                     .topCalories = &topCalories};
     double time_in_sec = time_callback(execute, &con);
