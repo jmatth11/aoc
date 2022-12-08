@@ -28,9 +28,7 @@ function M.print_table(t)
             print(i, " = ", v)
         end
     else
-        for i=1, #t do
-            print(i, ": ", t[i])
-        end
+        tostring(t)
     end
 end
 
