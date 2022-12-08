@@ -44,6 +44,7 @@ local function prob_1(line, context)
                 context.sum = context.sum + p
                 -- clear out value since it's been counted
                 context.memory[c] = nil
+                break
             end
         end
     end
