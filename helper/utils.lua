@@ -9,4 +9,29 @@ function M.file_exists(filename)
     return f ~= nil
 end
 
+-- Get subrange of table/array.
+-- @param {table} t The table to get a subrange from.
+-- @param {int} first The first index.
+-- @param {int} last The last index.
+-- @return {table} New table with the subrange of values.
+function M.subrange(t, first, last)
+    return table.move(t, first, last, 1, {})
+end
+
+function M.print_table(t)
+    if t == nil then
+        print("table is nil")
+        return
+    end
+    if type(t) == "table" then
+        for i,v in pairs(t) do
+            print(i, " = ", v)
+        end
+    else
+        for i=1, #t do
+            print(i, ": ", t[i])
+        end
+    end
+end
+
 return M

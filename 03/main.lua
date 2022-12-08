@@ -1,4 +1,3 @@
-package.path = package.path .. ";./?.lua"
 local helpers = require("utils")
 
 -- Get the priority value of the input char.
