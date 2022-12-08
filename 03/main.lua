@@ -1,11 +1,5 @@
--- Convenience function for checking if file exists.
--- @param {string} filename The filename.
--- @return {boolean} True if file exists, false otherwise.
-local function file_exists(filename)
-    local f = io.open(filename, "rb")
-    if f then f:close() end
-    return f ~= nil
-end
+package.path = package.path .. ";./?.lua"
+local helpers = require("utils")
 
 -- Get the priority value of the input char.
 -- @param {string} inputChar The input char.
@@ -95,7 +89,7 @@ function Main()
         return
     end
     local filename = arg[1]
-    if not file_exists(filename) then
+    if not helpers.file_exists(filename) then
         print("file did not exist")
         return
     end
